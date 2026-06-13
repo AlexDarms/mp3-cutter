@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>MP3 Cutter</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<main class="app-shell">
+    <section class="workspace">
+        <header class="topbar">
+            <div>
+                <h1>MP3 Cutter</h1>
+                <p id="status">Upload an MP3 to begin.</p>
+            </div>
+            <label class="upload-button">
+                <input id="fileInput" type="file" accept=".mp3,audio/mpeg">
+                Choose MP3
+            </label>
+        </header>
+
+        <div id="waveform" class="waveform"></div>
+
+        <div class="timeline">
+            <span id="currentTime">00:00.000</span>
+            <span id="duration">00:00.000</span>
+        </div>
+
+        <section class="controls" aria-label="Playback controls">
+            <button id="playPause" disabled>Play</button>
+            <button id="preview" disabled>Preview Selection</button>
+            <button id="stopPreview" disabled>Stop Preview</button>
+            <button id="save" disabled>Save Trimmed MP3</button>
+        </section>
+
+        <section class="selection-grid" aria-label="Selection controls">
+            <label>
+                Start
+                <input id="startInput" type="number" min="0" step="0.001" value="0" disabled>
+            </label>
+            <label>
+                End
+                <input id="endInput" type="number" min="0" step="0.001" value="0" disabled>
+            </label>
+            <label>
+                Zoom
+                <input id="zoom" type="range" min="20" max="250" value="80" disabled>
+            </label>
+        </section>
+
+        <div class="marker-readout">
+            <span>Selected: <strong id="selectionText">00:00.000 - 00:00.000</strong></span>
+        </div>
+    </section>
+</main>
+
+<script type="module" src="/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,165 @@
+:root {
+    color-scheme: light;
+    --bg: #f6f7f9;
+    --panel: #ffffff;
+    --ink: #18202a;
+    --muted: #66717f;
+    --line: #d9dee7;
+    --accent: #0f7b6c;
+    --accent-strong: #095b50;
+    --danger: #b42318;
+    --region: rgba(15, 123, 108, 0.18);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.app-shell {
+    width: min(1120px, calc(100vw - 32px));
+    margin: 32px auto;
+}
+
+.workspace {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 24px;
+    box-shadow: 0 12px 30px rgba(24, 32, 42, 0.08);
+}
+
+.topbar {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+h1 {
+    margin: 0 0 6px;
+    font-size: 28px;
+    letter-spacing: 0;
+}
+
+p {
+    margin: 0;
+    color: var(--muted);
+}
+
+.upload-button,
+button {
+    min-height: 40px;
+    border: 1px solid var(--accent);
+    border-radius: 6px;
+    background: var(--accent);
+    color: #fff;
+    padding: 0 16px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.upload-button {
+    display: inline-flex;
+    align-items: center;
+    white-space: nowrap;
+}
+
+.upload-button input {
+    display: none;
+}
+
+button:hover,
+.upload-button:hover {
+    background: var(--accent-strong);
+}
+
+button:disabled {
+    border-color: var(--line);
+    background: #edf0f4;
+    color: #8893a1;
+    cursor: not-allowed;
+}
+
+.waveform {
+    min-height: 220px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: #fbfcfd;
+    overflow: hidden;
+}
+
+.timeline,
+.marker-readout {
+    display: flex;
+    justify-content: space-between;
+    color: var(--muted);
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+.controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 22px;
+}
+
+.selection-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(160px, 1fr));
+    gap: 16px;
+    margin-top: 22px;
+}
+
+label {
+    display: grid;
+    gap: 8px;
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 700;
+}
+
+input[type="number"],
+input[type="range"] {
+    width: 100%;
+}
+
+input[type="number"] {
+    height: 40px;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 0 10px;
+    color: var(--ink);
+}
+
+#status.error {
+    color: var(--danger);
+}
+
+@media (max-width: 720px) {
+    .app-shell {
+        width: min(100vw - 20px, 1120px);
+        margin: 10px auto;
+    }
+
+    .workspace {
+        padding: 16px;
+    }
+
+    .topbar {
+        flex-direction: column;
+    }
+
+    .selection-grid {
+        grid-template-columns: 1fr;
+    }
+}

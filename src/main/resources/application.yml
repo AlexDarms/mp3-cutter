@@ -1,0 +1,18 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: mp3-cutter
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+
+app:
+  audio:
+    max-upload-bytes: 52428800
+    temp-file-timeout: 30m
+    cleanup-interval-ms: 300000
+    ffmpeg-path: ffmpeg
+    ffprobe-path: ffprobe
