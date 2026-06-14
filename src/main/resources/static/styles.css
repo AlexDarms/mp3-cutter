@@ -91,10 +91,25 @@ button:disabled {
 
 .waveform {
     min-height: 220px;
+    width: 100%;
+    max-width: 100%;
     border: 1px solid var(--line);
     border-radius: 8px;
     background: #fbfcfd;
     overflow: hidden;
+}
+
+.waveform ::part(region) {
+    border-left: 5px solid #d12d1f;
+    border-right: 5px solid #d12d1f;
+}
+
+.waveform ::part(region-handle),
+.waveform ::part(region-handle-left),
+.waveform ::part(region-handle-right) {
+    width: 10px;
+    background: #d12d1f;
+    opacity: 1;
 }
 
 .timeline,

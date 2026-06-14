@@ -23,6 +23,7 @@ let waveSurfer = null;
 let regions = null;
 let activeRegion = null;
 let previewTimer = null;
+let resizeObserver = null;
 
 function setStatus(message, isError = false) {
     elements.status.textContent = message;
@@ -51,6 +52,10 @@ function createWaveSurfer() {
     if (waveSurfer) {
         waveSurfer.destroy();
     }
+    if (resizeObserver) {
+        resizeObserver.disconnect();
+        resizeObserver = null;
+    }
     regions = RegionsPlugin.create();
     waveSurfer = WaveSurfer.create({
         container: elements.waveform,
@@ -58,7 +63,8 @@ function createWaveSurfer() {
         progressColor: '#0f7b6c',
         cursorColor: '#18202a',
         height: 220,
-        minPxPerSec: Number(elements.zoom.value),
+        minPxPerSec: 1,
+        fillParent: true,
         normalize: true,
         plugins: [regions]
     });
@@ -67,7 +73,10 @@ function createWaveSurfer() {
         durationSeconds = waveSurfer.getDuration();
         elements.duration.textContent = formatTime(durationSeconds);
         elements.currentTime.textContent = formatTime(0);
+        elements.zoom.value = '0';
+        fitTrackToContainer();
         createInitialRegion();
+        observeWaveformResize();
         setControlsEnabled(true);
         setStatus('Ready. Drag the selection edges or type timestamps.');
     });
@@ -101,11 +110,42 @@ function createInitialRegion() {
     activeRegion = regions.addRegion({
         start: 0,
         end,
-        color: 'rgba(15, 123, 108, 0.18)',
+        color: 'rgba(15, 123, 108, 0.26)',
         drag: true,
         resize: true
     });
+    emphasizeRegionEdges(activeRegion);
     syncInputsFromRegion();
+}
+
+function fitTrackToContainer() {
+    if (!waveSurfer || !durationSeconds) {
+        return;
+    }
+    const width = elements.waveform.clientWidth || 1;
+    const fitPxPerSec = Math.max(1, Math.floor(width / durationSeconds));
+    waveSurfer.zoom(fitPxPerSec);
+}
+
+function observeWaveformResize() {
+    resizeObserver = new ResizeObserver(() => {
+        if (elements.zoom.value === '0') {
+            fitTrackToContainer();
+        }
+    });
+    resizeObserver.observe(elements.waveform);
+}
+
+function emphasizeRegionEdges(region) {
+    requestAnimationFrame(() => {
+        const element = region.element;
+        if (!element) {
+            return;
+        }
+        element.style.borderLeft = '5px solid #d12d1f';
+        element.style.borderRight = '5px solid #d12d1f';
+        element.style.boxShadow = 'inset 5px 0 0 rgba(255,255,255,0.85), inset -5px 0 0 rgba(255,255,255,0.85)';
+    });
 }
 
 function syncInputsFromRegion() {
@@ -252,6 +292,11 @@ elements.startInput.addEventListener('change', syncRegionFromInputs);
 elements.endInput.addEventListener('change', syncRegionFromInputs);
 elements.zoom.addEventListener('input', () => {
     if (waveSurfer) {
-        waveSurfer.zoom(Number(elements.zoom.value));
+        const zoom = Number(elements.zoom.value);
+        if (zoom === 0) {
+            fitTrackToContainer();
+        } else {
+            waveSurfer.zoom(zoom);
+        }
     }
 });
